@@ -1,9 +1,8 @@
 body {
-  margin: 0 auto;
+  margin:0;
 }
-
 .game-beginning {
-  background: url(game-background.jpg);
+  background: url('game-background.jpg');
   background-size:cover;
   display:flex;
   height:100vh;
@@ -11,9 +10,18 @@ body {
 }
 
 #start-button {
-  font-family: Denk One
-  font-size:30px;
-  display:inline-block;
+  color: transparent;
+  text-shadow: 0 0 1px rgba(0,0,0);
+  font-family: 'Denk One', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position:relative;
+  height:8%;
+  background:transparent;
+  border-radius:30px 15px 30px; 15px;
+  border: 1px dotted transparent;
+  left:18%;
+  top:46%;
 }
 
 /* flashing scary message css below */
@@ -24,16 +32,15 @@ body {
 
 #intro-message {
   color: transparent;
-  text-shadow: 0 0 4px rgba(0,0,0);
+  text-shadow: 0 0 3px rgba(0,0,0);
   font-family: 'Denk One', sans-serif;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 2em;
+  font-size: 2.1em;
   background-color: @dark-gray;
   position: relative;
-  left: 68%;
-  top: 35%;
-  margin-left: -180px;
+  left: 52%;
+  top: 36%;
   
   -webkit-animation: horror-animation 2s infinite;
   -moz-animation: horror-animation 2s infinite;

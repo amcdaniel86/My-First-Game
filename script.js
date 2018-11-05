@@ -3,6 +3,28 @@ class Pong-Destroyer{
 }
 
 
+// on mouseover, the 'Pong Awaits You' message jumps at screen or shakes, does something.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // classes,
 // player 1 and 2
 // properties and display (canvas) static image background
