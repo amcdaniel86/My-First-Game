@@ -61,3 +61,6 @@ mac.nameAndPrice();
 
 // The product's name is: Banana and the product's price is: 2
 // The product's name is: Mac and the product's price is: 200
+
+//CANVAS ANIMATION NOTES - CODE ALONG
+
