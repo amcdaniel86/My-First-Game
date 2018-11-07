@@ -1,12 +1,12 @@
 body {
   margin:0;
 }
-.game-beginning {
+#game-board {
   background: url('game-background.jpg');
   background-size:cover;
   display:flex;
-  height:100vh;
-  width:100vw;
+  /* height:100vh;
+  width:100vw; */
 }
 
 #start-button {
@@ -18,7 +18,7 @@ body {
   position:relative;
   height:8%;
   background:transparent;
-  border-radius:30px 15px 30px; 15px;
+  border-radius:30px 15px 30px 15px;
   border: 1px dotted transparent;
   left:12%;
   top:46%;
