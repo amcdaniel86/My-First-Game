@@ -1,27 +1,37 @@
 let keysBeingPressed = [];
 let theGame;
-
-//to prevent the movement of the screen when you press the arrow keis
+let orbs = [];
+let cd = true;
+let cd2 = true;
+//to prevent the movement of the screen when you press the arrow keys
 
 class Game {
   constructor() {
     this.ctx = document.getElementById("game-board").getContext("2d");
 
-    this.player1 = new Player(110, 150, 1350, 180);
-    this.player2 = new Player(110, 150, 45, 180);
+    this.player1 = new Player(110, 150, 45, 180);
+    this.player2 = new PlayerTwo(110, 150, 1350, 180);
     // create new character automatically when new game is started.
     setInterval(() => {
-      this.ctx.clearRect(0, 0, 1500, 800);
+      this.ctx.clearRect(0, 0, 1600, 1400);
       this.player1.draw();
       this.player2.draw();
-      this.player1.movePlayer1();
+      this.player2.shot();
+      this.player1.shot();
+      orbs.forEach((fire)=> {
+          fire.draw();
+      })
+      this.player1.movePlayer();
       this.player2.movePlayer2();
+      // this.orb.shootOrb();
     }, 50);
   }
 }
 
+// document.onclick ("start-button")
+
 document.onkeydown = function(e) {
-  let commands = ["ArrowUp", "ArrowDown", "S", "W"];
+  let commands = ["ArrowUp", "ArrowDown", "S", "W", "X", "ArrowLeft"];
   if (commands.includes(e.key)) {
     e.preventDefault();
   }
@@ -37,12 +47,8 @@ document.onkeyup = function(e) {
     keysBeingPressed.splice(theIndex, 1);
   }
 };
+      
 
-class Orb {
-  constructor(x, y){
-    this.ctx = document.getElementById("game-screen").getContext("2d");
-  }
-}
 
 class Player {
   constructor(width, height, x, y) {
@@ -50,6 +56,7 @@ class Player {
     this.height = height;
     this.x = x;
     this.y = y;
+    this.life = 5;
     this.imgsrc = "images/ghost3.png";
     this.ctx = document.getElementById("game-board").getContext("2d");
     // properties for constructor go within first curlies
@@ -57,39 +64,44 @@ class Player {
   draw() {
     let theImage = new Image();
     theImage.src = this.imgsrc;
-    theImage.onload = () => {
+    theImage. onload = () => {
       this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
     };
   }
-  movePlayer1() {
-    this.canMove(this.y);
 
-    if (keysBeingPressed.includes("ArrowUp")) {
-      console.log("uppppp");
-      if (this.canMove(this.y - 20)) {
-        this.y -= 10;
+  shot() {
+    if(cd){
+      if(keysBeingPressed.includes("x")){
+        orbs.push(new Orb(this.x+100, this.y+50));
+        cd = false;
+        setTimeout(() => {cd = true},900);
+       }
       }
     }
-    if (keysBeingPressed.includes("ArrowDown")) {
-      console.log("downnnnn");
-      if (this.canMove(this.y + 20)) {
-        this.y += 10;
-      }
-    }
-  }
-  movePlayer2() {
+
+    theGame.orbs.forEach((orb)=>{
+
+      if(futureX < orb.x+orb.width && futureX+this.width > orb.x && futureY < orb.y+orb.height && futureY+this.height > orb.y){
+         this.life --
+         result = false;
+       }
+     })
+     return result;
+   }
+
+  movePlayer() {
     this.canMove(this.y);
 
     if (keysBeingPressed.includes("w")) {
       if (this.canMove(this.y - 20)) {
         console.log("uppppp");
-        this.y -= 10;
+        this.y -= 15;
       }
     }
     if (keysBeingPressed.includes("s")) {
       if (this.canMove(this.y + 20)) {
         console.log("downnnnn");
-        this.y += 10;
+        this.y += 15;
       }
     }
   }
@@ -101,6 +113,103 @@ class Player {
     return result;
   }
 }
+class PlayerTwo {
+  constructor(width, height, x, y) {
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+    this.imgsrc = "images/ghost3-2.png";
+    this.ctx = document.getElementById("game-board").getContext("2d");
+    // properties for constructor go within first curlies
+  }
+  draw() {
+    let theImage = new Image();
+    theImage.src = this.imgsrc;
+    theImage.onload = () => {
+      this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
+    };
+  }
+
+  shot() {
+    if(cd){
+      if(keysBeingPressed.includes("ArrowLeft")){
+        orbs.push(new OrbTwo(this.x-30, this.y+50));
+        cd = false;
+        setTimeout(() => {cd = true}, 1000);
+       }
+      }
+    }
+
+  movePlayer2() {
+    this.canMove(this.y);
+
+    if (keysBeingPressed.includes("ArrowUp")) {
+      console.log("uppppp");
+      if (this.canMove(this.y - 20)) {
+        this.y -= 15;
+      }
+    }
+    if (keysBeingPressed.includes("ArrowDown")) {
+      console.log("downnnnn");
+      if (this.canMove(this.y + 20)) {
+        this.y += 15;
+      }
+    }
+  }
+
+  canMove(futureY) {
+    let result = true;
+    if (futureY < 0 || futureY > 700) {
+      result = false;
+    }
+    return result;
+  }
+}
+
+
+class Orb {
+  constructor(x, y) {
+    this.ctx = document.getElementById("game-board").getContext("2d");
+    this.x = x;
+    this.y = y;
+    this.width = 40;
+    this.height = 40;
+    this.imgsrc = "images/green-orb.png";
+    this.moveOrb();
+  }
+
+  draw() {
+    let shotImage = new Image();
+    shotImage.src = this.imgsrc;
+    this.ctx.drawImage(shotImage, this.x, this.y, this.width, this.height);
+  };
+  moveOrb() {
+    setInterval(()=>{
+      this.x += 10;
+        }, 40)}
+  }
+class OrbTwo {
+  constructor(x, y) {
+    this.ctx = document.getElementById("game-board").getContext("2d");
+    this.x = x;
+    this.y = y;
+    this.width = 40;
+    this.height = 40;
+    this.imgsrc = "images/green-orb.png";
+    this.moveOrbTwo();
+  }
+  draw() {
+    let shotImage = new Image();
+    shotImage.src = this.imgsrc;
+    this.ctx.drawImage(shotImage, this.x, this.y, this.width, this.height);
+  };
+  moveOrbTwo() {
+    setInterval(()=>{
+      this.x -= 5;
+        }, 40)}
+  }
+
 
 function startGame() {
   theGame = new Game();
@@ -119,10 +228,6 @@ canvas.height = 1000;
 
 
 
-//move players up and down, erase, increase the pixels to follow the player.
-
-//moving the car up and down. same with my game
-// so 2 squares/images on either side of the canvas, that move up and down.
 
 //character jumps when they shoot.
 
