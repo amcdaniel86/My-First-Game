@@ -3,6 +3,7 @@ let theGame;
 let orbs = [];
 let cd = true;
 let cd2 = true;
+let collisionCd = true;
 //to prevent the movement of the screen when you press the arrow keys
 
 class Game {
@@ -18,12 +19,17 @@ class Game {
       this.player2.draw();
       this.player2.shot();
       this.player1.shot();
-      orbs.forEach((fire)=> {
-          fire.draw();
-      })
+      this.orbs = [];
+      orbs.forEach(fire => {
+        fire.draw();
+      });
       this.player1.movePlayer();
       this.player2.movePlayer2();
+      orbs.forEach(orb => {
+        this.player1.chechHit1(orb);
+      });
       // this.orb.shootOrb();
+      // this.player1.hits();
     }, 50);
   }
 }
@@ -47,8 +53,6 @@ document.onkeyup = function(e) {
     keysBeingPressed.splice(theIndex, 1);
   }
 };
-      
-
 
 class Player {
   constructor(width, height, x, y) {
@@ -64,30 +68,22 @@ class Player {
   draw() {
     let theImage = new Image();
     theImage.src = this.imgsrc;
-    theImage. onload = () => {
+    theImage.onload = () => {
       this.ctx.drawImage(theImage, this.x, this.y, this.width, this.height);
     };
   }
 
   shot() {
-    if(cd){
-      if(keysBeingPressed.includes("x")){
-        orbs.push(new Orb(this.x+100, this.y+50));
+    if (cd) {
+      if (keysBeingPressed.includes("x")) {
+        orbs.push(new Orb(this.x + 100, this.y + 50));
         cd = false;
-        setTimeout(() => {cd = true},900);
-       }
+        setTimeout(() => {
+          cd = true;
+        }, 0);
       }
     }
-
-    theGame.orbs.forEach((orb)=>{
-
-      if(futureX < orb.x+orb.width && futureX+this.width > orb.x && futureY < orb.y+orb.height && futureY+this.height > orb.y){
-         this.life --
-         result = false;
-       }
-     })
-     return result;
-    }
+  }
 
   movePlayer() {
     this.canMove(this.y);
@@ -105,14 +101,55 @@ class Player {
       }
     }
   }
+  chechHit1(orb) {
+    console.log(orb);
+    if (
+      this.y == orb.y + orb.height ||
+      this.y + this.height == orb.y ||
+      this.x == orb.x + orb.width ||
+      this.x + this.width == orb.x
+    ) {
+      console.log("booom");
+      return;
+    }
+    this.life -= 1;
+    if (this.life > 0) {
+      collisionCd = false;
+    }
+
+    setTimeout(() => {
+      collisionCd = true;
+    }, 1000);
+  }
+
+  // hits() {
+  //   // console.log(theGame.orbs);
+  //   this.x;
+  //   this.y;
+  //   theGame.orbs.forEach(orb => {
+  //     console.log("-=-=-=-=-=-=-=-", orb);
+  //     if (
+  //       this.x < orb.x + orb.width &&
+  //       this.x + this.width > orb.x &&
+  //       this.y < orb.y + orb.height &&
+  //       this.y + this.height > orb.y
+  //     ) {
+  //       console.log(this.life);
+  //       this.life--;
+  //     }
+  //   });
+  // }
+
   canMove(futureY) {
     let result = true;
     if (futureY < 0 || futureY > 700) {
       result = false;
     }
+
     return result;
   }
 }
+
 class PlayerTwo {
   constructor(width, height, x, y) {
     this.width = width;
@@ -132,14 +169,16 @@ class PlayerTwo {
   }
 
   shot() {
-    if(cd){
-      if(keysBeingPressed.includes("ArrowLeft")){
-        orbs.push(new OrbTwo(this.x-30, this.y+50));
+    if (cd) {
+      if (keysBeingPressed.includes("ArrowLeft")) {
+        orbs.push(new OrbTwo(this.x - 30, this.y + 50));
         cd = false;
-        setTimeout(() => {cd = true}, 1000);
-       }
+        setTimeout(() => {
+          cd = true;
+        }, 1000);
       }
     }
+  }
 
   movePlayer2() {
     this.canMove(this.y);
@@ -167,7 +206,6 @@ class PlayerTwo {
   }
 }
 
-
 class Orb {
   constructor(x, y) {
     this.ctx = document.getElementById("game-board").getContext("2d");
@@ -183,12 +221,13 @@ class Orb {
     let shotImage = new Image();
     shotImage.src = this.imgsrc;
     this.ctx.drawImage(shotImage, this.x, this.y, this.width, this.height);
-  };
-  moveOrb() {
-    setInterval(()=>{
-      this.x += 10;
-        }, 40)}
   }
+  moveOrb() {
+    setInterval(() => {
+      this.x += 10;
+    }, 40);
+  }
+}
 class OrbTwo {
   constructor(x, y) {
     this.ctx = document.getElementById("game-board").getContext("2d");
@@ -203,13 +242,13 @@ class OrbTwo {
     let shotImage = new Image();
     shotImage.src = this.imgsrc;
     this.ctx.drawImage(shotImage, this.x, this.y, this.width, this.height);
-  };
-  moveOrbTwo() {
-    setInterval(()=>{
-      this.x -= 5;
-        }, 40)}
   }
-
+  moveOrbTwo() {
+    setInterval(() => {
+      this.x -= 5;
+    }, 40);
+  }
+}
 
 function startGame() {
   theGame = new Game();
@@ -219,15 +258,6 @@ startGame();
 let canvas = document.getElementById("game-board");
 canvas.width = 1600;
 canvas.height = 1000;
-
-
-
-
-
-
-
-
-
 
 //character jumps when they shoot.
 
