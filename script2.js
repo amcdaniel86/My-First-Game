@@ -87,7 +87,7 @@ class Player {
        }
      })
      return result;
-   }
+    }
 
   movePlayer() {
     this.canMove(this.y);
