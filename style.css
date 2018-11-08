@@ -15,13 +15,28 @@ body {
   font-family: 'Denk One', sans-serif;
   text-transform: uppercase;
   letter-spacing: 2px;
-  position:relative;
-  height:8%;
+  position:absolute;
+  font-size:20px;
+  height:5%;
   background:transparent;
   border-radius:30px 15px 30px 15px;
   border: 1px dotted transparent;
-  left:12%;
-  top:46%;
+  left:48%;
+  top:45%;
+}
+p {
+  color: darkred;
+  text-shadow: 0 0 1px rgba(0,0,0);
+  font-family: 'Denk One', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position:absolute;
+  height:5%;
+  background:transparent;
+  border-radius:30px 15px 30px 15px;
+  border: 1px dotted transparent;
+  left:56%;
+  top:78%;
 }
 
 #start-button:hover {
@@ -117,9 +132,9 @@ body {
   letter-spacing: 2px;
   font-size: 2.1em;
   background-color: @dark-gray;
-  position: relative;
-  left: 34%;
-  top: 36%;
+  position: absolute;
+  left: 44%;
+  top: 60%;
   
   -webkit-animation: horror-animation 2s infinite;
   -moz-animation: horror-animation 2s infinite;
